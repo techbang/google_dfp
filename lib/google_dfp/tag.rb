@@ -5,7 +5,7 @@ module GoogleDFP
     def self.get(name)
       all[name.to_s] || (raise ArgumentError, "Unknown Google DFP tag: '#{name}'")
     end
-    
+
     def self.all
       @tags ||= begin
         yaml = YAML.load_file("#{Rails.root}/config/google_dfp.yml")
@@ -13,7 +13,7 @@ module GoogleDFP
       end
     end
 
-    attr_reader :unit
+    attr_reader :unit, :collapse
 
     def initialize(options)
       options.each do |key,val|
@@ -22,6 +22,8 @@ module GoogleDFP
           @sizes = val.split.map{|size| Size.new size }
         when 'unit'
           @unit = val
+        when 'collapse'
+          @collapse = val
         else
           raise ArgumentError, "unknown option: #{key}"
         end
@@ -31,13 +33,14 @@ module GoogleDFP
     def data
       @data ||= {
         size: size,
-        unit: unit
+        unit: unit,
+        collapse: collapse
       }.freeze
     end
 
     def size
       return unless @sizes
-      
+
       @size ||= @sizes.map{|size| [size.width, size.height].join("x") }.join(" ")
     end
 
