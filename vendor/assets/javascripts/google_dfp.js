@@ -85,6 +85,8 @@ $(function(){
     if(typeof googletag.callback === "function") {
       googletag.callback();
     }
+
+    $("#sidebar .google-dfp[data-collapse='true']").css("margin-bottom", "10px");
   });
 
 })
