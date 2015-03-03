@@ -13,7 +13,7 @@ module GoogleDFP
       end
     end
 
-    attr_reader :unit, :collapse
+    attr_reader :unit, :collapse, :gold_enable, :gold_color
 
     def initialize(options)
       options.each do |key,val|
@@ -24,6 +24,10 @@ module GoogleDFP
           @unit = val
         when 'collapse'
           @collapse = val
+        when 'gold_enable'
+          @gold_enable = val
+        when 'gold_color'
+          @gold_color = val
         else
           raise ArgumentError, "unknown option: #{key}"
         end
@@ -34,7 +38,9 @@ module GoogleDFP
       @data ||= {
         size: size,
         unit: unit,
-        collapse: collapse
+        collapse: collapse,
+        gold_enable: gold_enable,
+        gold_color: gold_color
       }.freeze
     end
 
