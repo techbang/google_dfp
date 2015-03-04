@@ -8,7 +8,20 @@ module GoogleDFP
 
     def self.all
       @tags ||= begin
-        yaml = YAML.load_file("#{Rails.root}/config/google_dfp.yml")
+        yaml = nil
+
+        if File.exist?("#{Rails.root}/config/google_dfp.yml")
+          yaml = YAML.load_file("#{Rails.root}/config/google_dfp.yml")
+        else
+          Dir.glob("#{Rails.root}/config/google_dfp/*").each do |file_path|
+            if yaml.nil?
+              yaml = YAML.load_file(file_path)
+            else
+              yaml.merge!(YAML.load_file(file_path))
+            end
+          end
+        end
+
         Hash[yaml.map{|name, options| [name, Tag.new(options)] }]
       end
     end
