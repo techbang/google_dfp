@@ -87,6 +87,10 @@ $(function(){
     }
 
     $("#sidebar .google-dfp[data-collapse='true']").css("margin-bottom", "10px");
+
+    // mf only
+    $(".mf-ad-banner .google-dfp[data-collapse='true']").css("margin", "10px 0");
+    $(".mf-super-hero-ad .google-dfp[data-collapse='true']").css("margin-bottom", "35px");
   });
 
 })
