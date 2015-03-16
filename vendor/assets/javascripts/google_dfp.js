@@ -1,6 +1,7 @@
 $(function(){
 
-  var tags = $("div.google-dfp:visible");
+  var tags = $("div.google-dfp");
+  var mobile_visit = false;
 
   if(tags.length == 0)
     return; // nothing to do
@@ -16,6 +17,48 @@ $(function(){
     cache: true,
     url: '//www.googletagservices.com/tag/js/gpt.js'
   });
+
+
+  $(".mobile_full_ads_close").click(function(e) {
+    $(".mobile_full_ads").hide();
+  });
+
+  var create_cookie = function(name, value, days) {
+    var expires;
+
+    if (days) {
+      var date = new Date();
+      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+      expires = "; expires=" + date.toGMTString();
+    } else {
+      expires = "";
+    }
+    document.cookie = escape(name) + "=" + escape(value) + expires + "; path=/";
+  }
+
+  var read_cookie = function(name) {
+    var name = escape(name) + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+      if (c.indexOf(name) === 0) return unescape(c.substring(name.length, c.length));
+    }
+    return null;
+  }
+
+  if ($(".google-dfp[data-mobile-full-ads='true']") != []){
+    var date = new Date();
+    var key = window.location.hostname.replace(".", "_") + "_" + date.getFullYear() + "/" + date.getMonth() + "/" + date.getDate();
+
+    if (read_cookie(key) == null || read_cookie(key) == 1) {
+      var visit_number = read_cookie(key) == null ? 0 : parseInt(read_cookie(key));
+      create_cookie(key, visit_number + 1);
+      mobile_visit = true;
+    } else {
+      $(".mobile_full_ads").hide();
+    }
+  }
 
   // async commands
   googletag.cmd.push(function() {
@@ -70,6 +113,21 @@ $(function(){
             iframe_tag.contentDocument.getElementsByTagName("a")[0].style.cssText = "text-decoration: none;";
             iframe_tag.contentDocument.getElementsByTagName("span")[0].style.cssText = "color: #" + gold_color + ";";
           });
+        }
+
+        if ($(".google-dfp[data-mobile-full-ads='true']") != []){
+          var mobile_full_ads_unit = $(".google-dfp[data-mobile-full-ads='true']").attr("data-unit");
+
+
+          if (event.slot.i == mobile_full_ads_unit && event.isEmpty == true) {
+            $(".mobile_full_ads").hide();
+          } else if (event.slot.i == mobile_full_ads_unit && event.isEmpty == false) {
+            if (mobile_visit == true) {
+              $(".mobile_full_ads").show();
+              var ads_leftpx = ($(window).width() - event.size[0]) / 2;
+              $(".mobile_full_ads_close").css("margin-left", ads_leftpx + "px");
+            }
+          }
         }
       });
     })
