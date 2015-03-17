@@ -26,7 +26,7 @@ module GoogleDFP
       end
     end
 
-    attr_reader :unit, :collapse, :gold_enable, :gold_color, :mobile_full_ads
+    attr_reader :unit, :collapse, :gold_enable, :gold_color, :mobile_full_ads, :ads_resource
 
     def initialize(options)
       options.each do |key,val|
@@ -43,6 +43,8 @@ module GoogleDFP
           @gold_color = val
         when 'mobile_full_ads'
           @mobile_full_ads = val
+        when 'ads_resource'
+          @ads_resource = val
         else
           raise ArgumentError, "unknown option: #{key}"
         end
@@ -56,7 +58,8 @@ module GoogleDFP
         collapse: collapse,
         gold_enable: gold_enable,
         gold_color: gold_color,
-        mobile_full_ads: mobile_full_ads
+        mobile_full_ads: mobile_full_ads,
+        ads_resource: ads_resource
       }.freeze
     end
 

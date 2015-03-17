@@ -49,7 +49,14 @@ $(function(){
 
   if ($(".google-dfp[data-mobile-full-ads='true']") != []){
     var date = new Date();
-    var key = window.location.hostname.replace(".", "_") + "_" + date.getFullYear() + "/" + date.getMonth() + "/" + date.getDate();
+    var ads_resource = $(".google-dfp[data-mobile-full-ads='true']").data("ads-resource");
+
+    var key = ""
+    if (ads_resource == null){
+      key = window.location.hostname.replace(".", "_") + "_" + date.getFullYear() + "/" + date.getMonth() + "/" + date.getDate();
+    } else {
+      key = ads_resource + "_" + date.getFullYear() + "/" + date.getMonth() + "/" + date.getDate();
+    }
 
     if (read_cookie(key) == null || read_cookie(key) == 1) {
       var visit_number = read_cookie(key) == null ? 0 : parseInt(read_cookie(key));
