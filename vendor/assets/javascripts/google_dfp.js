@@ -50,12 +50,13 @@ $(function(){
   if ($(".google-dfp[data-mobile-full-ads='true']") != []){
     var date = new Date();
     var ads_resource = $(".google-dfp[data-mobile-full-ads='true']").data("ads-resource");
+    var ads_type = "mobile-full-ads"
 
     var key = ""
     if (ads_resource == null){
-      key = window.location.hostname.replace(".", "_") + "_" + date.getFullYear() + "/" + date.getMonth() + "/" + date.getDate();
+      key = window.location.hostname.replace(".", "_") + "_" + ads_type + "_" + date.getFullYear() + "/" + date.getMonth() + "/" + date.getDate();
     } else {
-      key = ads_resource + "_" + date.getFullYear() + "/" + date.getMonth() + "/" + date.getDate();
+      key = ads_resource + "_" + ads_type + "_" + date.getFullYear() + "/" + date.getMonth() + "/" + date.getDate();
     }
 
     if (read_cookie(key) == null || read_cookie(key) == 1) {
