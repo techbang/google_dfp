@@ -3,6 +3,10 @@ $(function(){
   var tags = $("div.google-dfp");
   var mobile_visit = false;
 
+  var timeoutid;
+  var crazy_visit = false;
+  var render_crazy_count = 0;
+
   if(tags.length == 0)
     return; // nothing to do
 
@@ -22,6 +26,51 @@ $(function(){
   $(".mobile_full_ads_close").click(function(e) {
     $(".mobile_full_ads").hide();
   });
+
+  var create_crazyad_close_button = function() {
+    $("<a id='crazyad_close_button'>關閉廣告</a>").insertBefore("#crazy_ad_big > div");
+    var crazyad = $("#crazyad_close_button");
+    if (crazyad.length > 0) {
+      crazyad.css("position", "absolute");
+      crazyad.css("z-index", "3");
+      crazyad.css("right", "8px");
+      crazyad.css("margin-top", "8px");
+      crazyad.css("color", "#fff");
+      crazyad.css("font-size", "14px");
+      crazyad.css("cursor", "pointer");
+
+      crazyad.click(function (event) {
+        $("#crazy_ad_big").hide();
+        $("#crazyad_close_button").hide();
+        $("#crazyad_open_button").show();
+
+        $(this).attr("data-settimeout", "Y");
+        if (timeoutid != null) {
+          clearInterval(timeoutid);
+        }
+      });
+    }
+  };
+
+  var create_crazyad_open_button = function() {
+    $("<a id='crazyad_open_button'>展開廣告</a>").insertBefore("#crazy_ad_small > div");
+    var crazyad = $("#crazyad_open_button");
+    if (crazyad.length > 0) {
+      crazyad.css("position", "absolute");
+      crazyad.css("z-index", "3");
+      crazyad.css("right", "318px");
+      crazyad.css("margin-top", "8px");
+      crazyad.css("color", "#fff");
+      crazyad.css("font-size", "14px");
+      crazyad.css("cursor", "pointer");
+
+      crazyad.click(function (event) {
+        $("#crazy_ad_big").show();
+        $("#crazyad_close_button").show();
+        $("#crazyad_open_button").hide();
+      });
+    }
+  };
 
   var create_cookie = function(name, value, days) {
     var expires;
@@ -135,6 +184,60 @@ $(function(){
               $(".mobile_full_ads").show();
               var ads_leftpx = ($(window).width() - event.size[0]) / 2;
               $(".mobile_full_ads_close").css("margin-left", ads_leftpx + "px");
+            }
+          }
+        }
+
+        if ($(".google-dfp[data-crazy-ads='true']") != []){
+          var crazy_ads_unit = $(".google-dfp[data-crazy-ads='true']").attr("data-unit");
+
+          if (event.slot.i == crazy_ads_unit && event.isEmpty == false) {
+            if (render_crazy_count == 0){
+              render_crazy_count = 1;
+
+              create_crazyad_close_button();
+              create_crazyad_open_button();
+
+              var date = new Date();
+              var ads_resource = $(".google-dfp[data-crazy-ads='true']").data("ads-resource");
+              var ads_type = "crazy-ads"
+              var visit_count = $(".google-dfp[data-crazy-ads='true']").data("visit-count");
+
+              var key = ""
+              if (ads_resource == null){
+                key = window.location.hostname.replace(".", "_") + "_" + ads_type + "_" + date.getFullYear() + "/" + date.getMonth() + "/" + date.getDate();
+              } else {
+                key = ads_resource + "_" + ads_type + "_" + date.getFullYear() + "/" + date.getMonth() + "/" + date.getDate();
+              }
+
+              if (read_cookie(key) == null || read_cookie(key) < visit_count) {
+                var visit_number = read_cookie(key) == null ? 0 : parseInt(read_cookie(key));
+                create_cookie(key, visit_number + 1);
+                crazy_visit = true;
+              }
+
+              if (crazy_visit == true){
+                $("#razy_ad_big").show();
+                $("#crazyad_close_button").show();
+                $("#crazyad_open_button").hide();
+
+                if ($("#crazyad_close_button").attr("data-settimeout") != "Y") {
+                  var times_run = 0;
+                  timeoutid = setInterval(function() {
+                    times_run += 1;
+                    $("#crazy_ad_big").hide();
+                    $("#crazyad_close_button").hide();
+                    $("#crazyad_open_button").show();
+
+                    if(times_run == 1){
+                      clearInterval(timeoutid);
+                    }
+                  }, 10000)
+                }
+              } else {
+                $("#crazy_ad_big").hide();
+                $("#crazyad_close_button").hide();
+              }
             }
           }
         }
