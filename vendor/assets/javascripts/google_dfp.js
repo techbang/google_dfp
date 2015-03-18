@@ -51,6 +51,7 @@ $(function(){
     var date = new Date();
     var ads_resource = $(".google-dfp[data-mobile-full-ads='true']").data("ads-resource");
     var ads_type = "mobile-full-ads"
+    var visit_count = $(".google-dfp[data-mobile-full-ads='true']").data("visit-count");
 
     var key = ""
     if (ads_resource == null){
@@ -59,7 +60,7 @@ $(function(){
       key = ads_resource + "_" + ads_type + "_" + date.getFullYear() + "/" + date.getMonth() + "/" + date.getDate();
     }
 
-    if (read_cookie(key) == null || read_cookie(key) == 1) {
+    if (read_cookie(key) == null || read_cookie(key) < visit_count) {
       var visit_number = read_cookie(key) == null ? 0 : parseInt(read_cookie(key));
       create_cookie(key, visit_number + 1);
       mobile_visit = true;
