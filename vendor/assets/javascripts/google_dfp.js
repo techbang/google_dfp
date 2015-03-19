@@ -33,11 +33,13 @@ $(function(){
     if (crazyad.length > 0) {
       crazyad.css("position", "absolute");
       crazyad.css("z-index", "3");
-      crazyad.css("right", "8px");
-      crazyad.css("margin-top", "8px");
+      crazyad.css("right", "5px");
+      crazyad.css("margin-top", "5px");
       crazyad.css("color", "#fff");
       crazyad.css("font-size", "14px");
       crazyad.css("cursor", "pointer");
+      crazyad.css("background-color", "rgba(0,0,0,0.7)");
+      crazyad.css("padding", "5px");
 
       crazyad.click(function (event) {
         $("#crazy_ad_big").hide();
@@ -58,11 +60,13 @@ $(function(){
     if (crazyad.length > 0) {
       crazyad.css("position", "absolute");
       crazyad.css("z-index", "3");
-      crazyad.css("right", "318px");
-      crazyad.css("margin-top", "8px");
+      crazyad.css("right", "315px");
+      crazyad.css("margin-top", "5px");
       crazyad.css("color", "#fff");
       crazyad.css("font-size", "14px");
       crazyad.css("cursor", "pointer");
+      crazyad.css("background-color", "rgba(0,0,0,0.7)");
+      crazyad.css("padding", "5px");
 
       crazyad.click(function (event) {
         $("#crazy_ad_big").show();
@@ -232,7 +236,7 @@ $(function(){
                     if(times_run == 1){
                       clearInterval(timeoutid);
                     }
-                  }, 10000)
+                  }, 12000)
                 }
               } else {
                 $("#crazy_ad_big").hide();
