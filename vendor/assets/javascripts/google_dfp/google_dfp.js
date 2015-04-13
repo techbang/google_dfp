@@ -172,8 +172,13 @@ $(function(){
             var gold_color = $(this).data('gold-color');
             var iframe_tag = document.getElementById("google_ads_iframe_" + unit + "_0");
             iframe_tag.contentDocument.getElementsByTagName("body")[0].style.cssText = "text-align: center; line-height: 30px;";
-            iframe_tag.contentDocument.getElementsByTagName("a")[0].style.cssText = "text-decoration: none;";
-            iframe_tag.contentDocument.getElementsByTagName("span")[0].style.cssText = "color: #" + gold_color + ";";
+
+            if (iframe_tag.contentDocument.getElementsByTagName("a").length != 0) {
+              iframe_tag.contentDocument.getElementsByTagName("a")[0].style.cssText = "text-decoration: none;";
+            };
+            if (iframe_tag.contentDocument.getElementsByTagName("span").length != 0) {
+              iframe_tag.contentDocument.getElementsByTagName("span")[0].style.cssText = "color: #" + gold_color + ";";
+            };
           });
         }
 
