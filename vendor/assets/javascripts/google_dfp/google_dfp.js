@@ -165,94 +165,96 @@ $(function(){
         }
       }
 
-      googletag.pubads().addEventListener("slotRenderEnded", function(event) {
-        if ($(".google-dfp[data-gold-enable='true']") != []){
-          $("div[data-gold-enable='true']").each(function(){
-            var unit = $(this).data('unit');
-            var gold_color = $(this).data('gold-color');
-            var iframe_tag = document.getElementById("google_ads_iframe_" + unit + "_0");
-            iframe_tag.contentDocument.getElementsByTagName("body")[0].style.cssText = "text-align: center; line-height: 30px;";
-
-            if (iframe_tag.contentDocument.getElementsByTagName("a").length != 0) {
-              iframe_tag.contentDocument.getElementsByTagName("a")[0].style.cssText = "text-decoration: none;";
-            };
-            if (iframe_tag.contentDocument.getElementsByTagName("span").length != 0) {
-              iframe_tag.contentDocument.getElementsByTagName("span")[0].style.cssText = "color: #" + gold_color + ";";
-            };
-          });
-        }
-
-        if ($(".google-dfp[data-mobile-full-ads='true']") != []){
-          var mobile_full_ads_unit = $(".google-dfp[data-mobile-full-ads='true']").attr("data-unit");
-
-
-          if (event.slot.i == mobile_full_ads_unit && event.isEmpty == true) {
-            $(".mobile_full_ads").hide();
-          } else if (event.slot.i == mobile_full_ads_unit && event.isEmpty == false) {
-            if (mobile_visit == true) {
-              $(".mobile_full_ads").show();
-              var ads_leftpx = ($(window).width() - event.size[0]) / 2;
-              $(".mobile_full_ads_close").css("margin-left", ads_leftpx + "px");
-            }
-          }
-        }
-
-        if ($(".google-dfp[data-crazy-ads='true']") != []){
-          var crazy_ads_unit = $(".google-dfp[data-crazy-ads='true']").attr("data-unit");
-          var slot_unit = event.slot.i || event.slot.w;
-
-          if (slot_unit == crazy_ads_unit && event.isEmpty == false) {
-            if (render_crazy_count == 0){
-              render_crazy_count = 1;
-
-              create_crazyad_close_button();
-              create_crazyad_open_button();
-
-              var date = new Date();
-              var ads_resource = $(".google-dfp[data-crazy-ads='true']").data("ads-resource");
-              var ads_type = "crazy-ads"
-              var visit_count = $(".google-dfp[data-crazy-ads='true']").data("visit-count");
-
-              var key = ""
-              if (ads_resource == null){
-                key = window.location.hostname.replace(".", "_") + "_" + ads_type + "_" + date.getFullYear() + "/" + date.getMonth() + "/" + date.getDate();
-              } else {
-                key = ads_resource + "_" + ads_type + "_" + date.getFullYear() + "/" + date.getMonth() + "/" + date.getDate();
-              }
-
-              if (read_cookie(key) == null || read_cookie(key) < visit_count) {
-                var visit_number = read_cookie(key) == null ? 0 : parseInt(read_cookie(key));
-                create_cookie(key, visit_number + 1);
-                crazy_visit = true;
-              }
-
-              if (crazy_visit == true){
-                $("#razy_ad_big").show();
-                $("#crazyad_close_button").show();
-                $("#crazyad_open_button").hide();
-
-                if ($("#crazyad_close_button").attr("data-settimeout") != "Y") {
-                  var times_run = 0;
-                  timeoutid = setInterval(function() {
-                    times_run += 1;
-                    $("#crazy_ad_big").hide();
-                    $("#crazyad_close_button").hide();
-                    $("#crazyad_open_button").show();
-
-                    if(times_run == 1){
-                      clearInterval(timeoutid);
-                    }
-                  }, 12000)
-                }
-              } else {
-                $("#crazy_ad_big").hide();
-                $("#crazyad_close_button").hide();
-              }
-            }
-          }
-        }
-      });
     })
+
+    // Add slotRenderEnded listener
+    googletag.pubads().addEventListener("slotRenderEnded", function(event) {
+      if ($(".google-dfp[data-gold-enable='true']") != []){
+        $("div[data-gold-enable='true']").each(function(){
+          var unit = $(this).data('unit');
+          var gold_color = $(this).data('gold-color');
+          var iframe_tag = document.getElementById("google_ads_iframe_" + unit + "_0");
+          iframe_tag.contentDocument.getElementsByTagName("body")[0].style.cssText = "text-align: center; line-height: 30px;";
+
+          if (iframe_tag.contentDocument.getElementsByTagName("a").length != 0) {
+            iframe_tag.contentDocument.getElementsByTagName("a")[0].style.cssText = "text-decoration: none;";
+          };
+          if (iframe_tag.contentDocument.getElementsByTagName("span").length != 0) {
+            iframe_tag.contentDocument.getElementsByTagName("span")[0].style.cssText = "color: #" + gold_color + ";";
+          };
+        });
+      }
+
+      if ($(".google-dfp[data-mobile-full-ads='true']") != []){
+        var mobile_full_ads_unit = $(".google-dfp[data-mobile-full-ads='true']").attr("data-unit");
+
+
+        if (event.slot.i == mobile_full_ads_unit && event.isEmpty == true) {
+          $(".mobile_full_ads").hide();
+        } else if (event.slot.i == mobile_full_ads_unit && event.isEmpty == false) {
+          if (mobile_visit == true) {
+            $(".mobile_full_ads").show();
+            var ads_leftpx = ($(window).width() - event.size[0]) / 2;
+            $(".mobile_full_ads_close").css("margin-left", ads_leftpx + "px");
+          }
+        }
+      }
+
+      if ($(".google-dfp[data-crazy-ads='true']") != []){
+        var crazy_ads_unit = $(".google-dfp[data-crazy-ads='true']").attr("data-unit");
+        var slot_unit = event.slot.i || event.slot.w;
+
+        if (slot_unit == crazy_ads_unit && event.isEmpty == false) {
+          if (render_crazy_count == 0){
+            render_crazy_count = 1;
+
+            create_crazyad_close_button();
+            create_crazyad_open_button();
+
+            var date = new Date();
+            var ads_resource = $(".google-dfp[data-crazy-ads='true']").data("ads-resource");
+            var ads_type = "crazy-ads"
+            var visit_count = $(".google-dfp[data-crazy-ads='true']").data("visit-count");
+
+            var key = ""
+            if (ads_resource == null){
+              key = window.location.hostname.replace(".", "_") + "_" + ads_type + "_" + date.getFullYear() + "/" + date.getMonth() + "/" + date.getDate();
+            } else {
+              key = ads_resource + "_" + ads_type + "_" + date.getFullYear() + "/" + date.getMonth() + "/" + date.getDate();
+            }
+
+            if (read_cookie(key) == null || read_cookie(key) < visit_count) {
+              var visit_number = read_cookie(key) == null ? 0 : parseInt(read_cookie(key));
+              create_cookie(key, visit_number + 1);
+              crazy_visit = true;
+            }
+
+            if (crazy_visit == true){
+              $("#razy_ad_big").show();
+              $("#crazyad_close_button").show();
+              $("#crazyad_open_button").hide();
+
+              if ($("#crazyad_close_button").attr("data-settimeout") != "Y") {
+                var times_run = 0;
+                timeoutid = setInterval(function() {
+                  times_run += 1;
+                  $("#crazy_ad_big").hide();
+                  $("#crazyad_close_button").hide();
+                  $("#crazyad_open_button").show();
+
+                  if(times_run == 1){
+                    clearInterval(timeoutid);
+                  }
+                }, 12000)
+              }
+            } else {
+              $("#crazy_ad_big").hide();
+              $("#crazyad_close_button").hide();
+            }
+          }
+        }
+      }
+    });
 
     // enable services
     googletag.pubads().enableSingleRequest();
