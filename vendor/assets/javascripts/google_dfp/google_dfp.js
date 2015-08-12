@@ -199,8 +199,9 @@ $(function(){
 
         if ($(".google-dfp[data-crazy-ads='true']") != []){
           var crazy_ads_unit = $(".google-dfp[data-crazy-ads='true']").attr("data-unit");
+          var slot_unit = event.slot.i || event.slot.w;
 
-          if (event.slot.i == crazy_ads_unit && event.isEmpty == false) {
+          if (slot_unit == crazy_ads_unit && event.isEmpty == false) {
             if (render_crazy_count == 0){
               render_crazy_count = 1;
 
