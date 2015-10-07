@@ -187,11 +187,11 @@ $(function(){
 
       if ($(".google-dfp[data-mobile-full-ads='true']") != []){
         var mobile_full_ads_unit = $(".google-dfp[data-mobile-full-ads='true']").attr("data-unit");
+        var slot_unit = event.slot.i || event.slot.w;
 
-
-        if (event.slot.i == mobile_full_ads_unit && event.isEmpty == true) {
+        if (slot_unit == mobile_full_ads_unit && event.isEmpty == true) {
           $(".mobile_full_ads").hide();
-        } else if (event.slot.i == mobile_full_ads_unit && event.isEmpty == false) {
+        } else if (slot_unit == mobile_full_ads_unit && event.isEmpty == false) {
           if (mobile_visit == true) {
             $(".mobile_full_ads").show();
             var ads_leftpx = ($(window).width() - event.size[0]) / 2;
