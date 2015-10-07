@@ -195,7 +195,8 @@ $(function(){
           if (mobile_visit == true) {
             $(".mobile_full_ads").show();
             var ads_leftpx = ($(window).width() - event.size[0]) / 2;
-            $(".mobile_full_ads_close").css("margin-left", ads_leftpx + "px");
+            $(".mobile_full_ads_close").css("right", ads_leftpx + "px");
+            $(".mobile_full_ads_close").css("background-position-x", "right");
           }
         }
       }
