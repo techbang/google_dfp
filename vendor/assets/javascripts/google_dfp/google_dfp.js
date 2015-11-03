@@ -185,13 +185,14 @@ $(function(){
         });
       }
 
-      if ($(".google-dfp[data-mobile-full-ads='true']") != []){
-        var mobile_full_ads_unit = $(".google-dfp[data-mobile-full-ads='true']").attr("data-unit");
-        var slot_unit = event.slot.i || event.slot.w;
-
-        if (slot_unit == mobile_full_ads_unit && event.isEmpty == true) {
+      if (["dfp-full_ads_techbang_mobile_1", "dfp-full_ads_pcadv_mobile_1"].indexOf(event.slot.getSlotElementId()) > -1){
+        if (event.isEmpty == true) {
+          if (read_cookie("prepage") == "1") {
+            create_cookie("prepage", "0", 1/24/60*3 );
+            window.location.replace(window.location.href + "/prepage");
+          }
           $(".mobile_full_ads").hide();
-        } else if (slot_unit == mobile_full_ads_unit && event.isEmpty == false) {
+        } else {
           if (mobile_visit == true) {
             $(".mobile_full_ads").show();
             var ads_leftpx = ($(window).width() - event.size[0]) / 2;
