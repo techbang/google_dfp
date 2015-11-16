@@ -186,8 +186,8 @@ $(function(){
       }
 
       if ($(".google-dfp[data-mobile-full-ads='true']") != []){
-        var mobile_full_ads_unit = $(".google-dfp[data-mobile-full-ads='true']").attr("data-unit");
-        var slot_unit = event.slot.i || event.slot.w;
+        var mobile_full_ads_unit = $(".google-dfp[data-mobile-full-ads='true']").attr("id");
+        var slot_unit = event.slot.getSlotElementId();
 
         if (slot_unit == mobile_full_ads_unit && event.isEmpty == true) {
           $(".mobile_full_ads").hide();
@@ -202,8 +202,8 @@ $(function(){
       }
 
       if ($(".google-dfp[data-crazy-ads='true']") != []){
-        var crazy_ads_unit = $(".google-dfp[data-crazy-ads='true']").attr("data-unit");
-        var slot_unit = event.slot.i || event.slot.w;
+        var crazy_ads_unit = $(".google-dfp[data-crazy-ads='true']").attr("id");
+        var slot_unit = event.slot.getSlotElementId();
 
         if (slot_unit == crazy_ads_unit && event.isEmpty == false) {
           if (render_crazy_count == 0){
