@@ -206,11 +206,6 @@ $(function(){
     googletag.pubads().enableAsyncRendering();
     googletag.enableServices();
 
-    // display ads
-    tags.each(function(){
-      googletag.display(this.id);
-    })
-
     if(typeof googletag.callback === "function") {
       googletag.callback();
     }

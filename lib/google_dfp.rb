@@ -31,11 +31,17 @@ module GoogleDFP
 
     def dfp_div_tag(id, style, data)
       content_tag :div,
-        "",
+        cmd_push(dfp_display_script(id)),
         id:    id,
         class: 'google-dfp',
         style: style,
         data:  data
+    end
+
+    def dfp_display_script(id)
+      %Q(
+        googletag.display("#{id}");
+      )
     end
 
     def cmd_push(content)
