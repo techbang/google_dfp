@@ -10,19 +10,6 @@ $(function(){
   if(tags.length == 0)
     return; // nothing to do
 
-  // initialize googletag-variable
-  window.googletag = window.googletag || {};
-  var googletag = window.googletag;
-  googletag.cmd = [];
-
-  // Load script
-  $.ajax({
-    dataType: "script",
-    cache: true,
-    url: '//www.googletagservices.com/tag/js/gpt.js'
-  });
-
-
   $(".mobile_full_ads_close").click(function(e) {
     $(".mobile_full_ads").hide();
   });
