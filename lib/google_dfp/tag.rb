@@ -26,7 +26,7 @@ module GoogleDFP
       end
     end
 
-    attr_reader :unit, :collapse, :gold_enable, :gold_color, :mobile_full_ads, :ads_resource, :visit_count, :crazy_ads
+    attr_reader :unit, :gold_enable, :gold_color, :mobile_full_ads, :ads_resource, :visit_count, :crazy_ads
 
     def initialize(options)
       options.each do |key,val|
@@ -35,8 +35,6 @@ module GoogleDFP
           @sizes = val.split.map{|size| Size.new size }
         when 'unit'
           @unit = val
-        when 'collapse'
-          @collapse = val
         when 'gold_enable'
           @gold_enable = val
         when 'gold_color'
@@ -59,7 +57,6 @@ module GoogleDFP
       @data ||= {
         size: size,
         unit: unit,
-        collapse: collapse,
         gold_enable: gold_enable,
         gold_color: gold_color,
         mobile_full_ads: mobile_full_ads,
