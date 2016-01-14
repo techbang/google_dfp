@@ -186,17 +186,41 @@ $(function(){
       }
 
       if ($(".google-dfp[data-mobile-full-ads='true']") != []){
-        var mobile_full_ads_unit = $(".google-dfp[data-mobile-full-ads='true']").attr("id");
-        var slot_unit = event.slot.getSlotElementId();
+        var gogole_dfp_div = $(".google-dfp[data-mobile-full-ads='true']"),
+            mobile_full_ads_unit = gogole_dfp_div.attr("id"),
+            slot_unit = event.slot.getSlotElementId();
 
-        if (slot_unit == mobile_full_ads_unit && event.isEmpty == true) {
-          $(".mobile_full_ads").hide();
-        } else if (slot_unit == mobile_full_ads_unit && event.isEmpty == false) {
+        if (slot_unit == mobile_full_ads_unit && event.isEmpty == false) {
           if (mobile_visit == true) {
-            $(".mobile_full_ads").show();
-            var ads_leftpx = ($(window).width() - event.size[0]) / 2;
-            $(".mobile_full_ads_close").css("right", ads_leftpx + "px");
-            $(".mobile_full_ads_close").css("background-position-x", "right");
+            var iframe_tag = document.getElementById("google_ads_iframe_" + gogole_dfp_div.data('unit') + "_0");
+
+            if (iframe_tag.contentDocument.getElementsByClassName("scupioadslot").length > 0){
+              var div = document.createElement('div'),
+                  nodes = iframe_tag.contentDocument.body.childNodes;
+
+              for(i = 0; i < nodes.length; i++) {
+                if (nodes[i].nodeName == "SCRIPT")
+                {
+                  if (nodes[i].src.length > 0){
+                    var ad_script = document.createElement("script");
+                    ad_script.type = "text/javascript";
+                    ad_script.src = nodes[i].src;
+                    div.appendChild(ad_script);
+                  }
+                } else {
+                  var cln = nodes[i].cloneNode(true);
+                  div.appendChild(cln);
+                }
+              }
+
+              document.body.appendChild(div);
+            } else {
+              var ads_leftpx = ($(window).width() - event.size[0]) / 2,
+                  ads_close_btn = $(".mobile_full_ads_close");
+              ads_close_btn.css("right", ads_leftpx + "px");
+              ads_close_btn.css("background-position-x", "right");
+              $(".mobile_full_ads").show();
+            }
           }
         }
       }
